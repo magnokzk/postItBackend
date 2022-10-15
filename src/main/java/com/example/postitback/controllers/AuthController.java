@@ -20,9 +20,13 @@ public class AuthController {
     private ResponseEntity<?> save(@RequestBody User user){
         try{
             User foundUser = repository.findUserByUsernameAndPassword(user.getUsername(), user.getPassword());
+            if(foundUser == null){
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
             return new ResponseEntity<User>(foundUser, new HttpHeaders(), HttpStatus.OK);
         } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

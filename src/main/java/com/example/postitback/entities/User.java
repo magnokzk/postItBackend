@@ -1,12 +1,14 @@
 package com.example.postitback.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
     @Column(nullable = false)
     private String username;
@@ -14,6 +16,10 @@ public class User {
     private String password;
     @Column(nullable = false)
     private String email;
+
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private List<Posts> posts;
 
     public Long getId() {
         return id;
