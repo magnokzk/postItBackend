@@ -1,7 +1,7 @@
 package com.example.postitback.pojo;
 
 public class PostRequest {
-    private Long post_id;
+    private Long postId;
     public String description;
-    public Long user_id;
+    public Long userId;
 }

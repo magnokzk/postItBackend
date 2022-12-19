@@ -1,42 +1,35 @@
 package com.example.postitback.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.sun.istack.NotNull;
+import lombok.*;
+
 import javax.persistence.*;
 import java.util.Optional;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Posts {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     private Long id;
-    @Column(nullable = false, columnDefinition = "TEXT")
+
+    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
+    @Column(name = "user_id", nullable = false)
+    @JsonBackReference
+    private Long userId;
+
     @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @Transient
     @JoinColumn(name = "user_id")
+    @NotNull
     private User user;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

@@ -8,7 +8,12 @@ import com.example.postitback.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class PostService {
@@ -19,18 +24,22 @@ public class PostService {
     @Autowired
     PostRepository postRepository;
 
-    public PostService(){
-
-    }
-
     public Posts addPost(PostRequest postRequest){
-        Optional<User> user = userRepository.findById(postRequest.user_id);
-
         Posts post = new Posts();
         post.setDescription(postRequest.description);
-        user.ifPresent(userValue -> post.setUser(userValue));
+        post.setUserId(postRequest.userId);
 
         return postRepository.save(post);
+    }
+
+    public List<Posts> getPosts(){
+        List<Posts> allPosts = postRepository.findAll();
+        for(Posts post : allPosts){
+            Optional<User> userOptional = userRepository.findById(post.getUserId());
+            userOptional.ifPresent(post::setUser);
+        }
+
+        return allPosts;
     }
 
 }

@@ -2,6 +2,7 @@ package com.example.postitback.controllers;
 
 import com.example.postitback.entities.User;
 import com.example.postitback.repositories.UserRepository;
+import com.example.postitback.utils.CryptoManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,11 @@ public class UserController {
     @PostMapping
     private ResponseEntity<?> save(@RequestBody User user){
         try{
-            repository.save(user);
+            User newUser = new User();
+            newUser.setUsername(user.getUsername());
+            newUser.setEmail(user.getEmail());
+            newUser.setPassword(CryptoManager.encrypt(user.getPassword()));
+            repository.save(newUser);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

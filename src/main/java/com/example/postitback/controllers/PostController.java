@@ -24,7 +24,7 @@ public class PostController {
     @CrossOrigin("http://localhost:3000")
     private ResponseEntity<?> list(){
         try{
-            return new ResponseEntity<Object>(repository.findAll(), new HttpHeaders(), HttpStatus.OK);
+            return new ResponseEntity<Object>(postService.getPosts(), new HttpHeaders(), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -44,9 +44,9 @@ public class PostController {
 
     @DeleteMapping
     @CrossOrigin("http://localhost:3000")
-    private ResponseEntity<?> delete(@RequestBody Posts post){
+    private ResponseEntity<?> deleteById(@RequestBody Posts post){
         try{
-            repository.delete(post);
+            repository.deleteById(post.getId());
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e){
