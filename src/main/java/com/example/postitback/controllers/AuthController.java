@@ -24,7 +24,7 @@ public class AuthController {
     @CrossOrigin("http://localhost:3000")
     private ResponseEntity<?> save(@RequestBody User user){
         try{
-            UserAuthRequest returnUser = userService.atuhenticateUser(user);
+            UserAuthRequest returnUser = userService.authenticateUser(user);
 
             return new ResponseEntity<UserAuthRequest>(returnUser, new HttpHeaders(), HttpStatus.OK);
         } catch (Exception e){

@@ -27,7 +27,7 @@ public class UserService {
     @Autowired
     AuthRepository authRepository;
 
-    public UserAuthRequest atuhenticateUser(User user) throws Exception {
+    public UserAuthRequest authenticateUser(User user) throws Exception {
         User foundUser = authRepository.findUserByUsernameAndPassword(user.getUsername(), CryptoManager.encrypt(user.getPassword()));
         if(foundUser == null){
             throw new Exception("User.not.found");
