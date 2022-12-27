@@ -5,6 +5,8 @@ import com.example.postitback.pojo.UserAuthRequest;
 import com.example.postitback.repositories.AuthRepository;
 import com.example.postitback.repositories.UserRepository;
 import com.example.postitback.utils.CryptoManager;
+import com.example.postitback.utils.JwtManager;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,6 @@ import java.util.UUID;
 @Service
 public class UserService {
 
-    private final String secretKey = "ov4uDub1ZUpkHMWCX3B18T7dIJK6bS/c6YKgYJBI9IekQDp1nE7OUOf3n7/nvbsVO98Zq/47DJbgZZ8NnWUqBA==";
 
     @Autowired
     UserRepository userRepository;
@@ -33,16 +34,7 @@ public class UserService {
             throw new Exception("User.not.found");
         }
 
-        String token =  Jwts.builder()
-                .claim("userId", foundUser.getId())
-                .claim("username", foundUser.getUsername())
-                .claim("email", foundUser.getEmail())
-                .setSubject("user")
-                .setId(UUID.randomUUID().toString())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)))
-                .signWith(SignatureAlgorithm.HS512, secretKey)
-                .compact();
+        String token = JwtManager.newJwt(foundUser);
 
         UserAuthRequest returnData = new UserAuthRequest();
         returnData.setId(foundUser.getId());
@@ -51,5 +43,19 @@ public class UserService {
         returnData.setToken(token);
 
         return returnData;
+    }
+
+    public Long getUserIdFromToken(String token) throws Exception {
+        Boolean isValid = JwtManager.isTokenValid(token);
+        if(!isValid){
+            throw new Exception("Invalid.token");
+        }
+
+        Claims tokenClaims = JwtManager.getJwtClaims(token);
+        if(tokenClaims.get("userId") == null){
+            throw new Exception("Invalid.token");
+        }
+
+        return (Long) tokenClaims.get("userId");
     }
 }

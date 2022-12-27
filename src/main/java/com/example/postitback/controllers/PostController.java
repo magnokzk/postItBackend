@@ -1,15 +1,21 @@
 package com.example.postitback.controllers;
 
 import com.example.postitback.entities.Posts;
+import com.example.postitback.entities.User;
 import com.example.postitback.pojo.PostRequest;
 import com.example.postitback.repositories.PostRepository;
 import com.example.postitback.services.PostService;
+import com.example.postitback.utils.JwtManager;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 @Controller
 @RequestMapping("/controllers/post")
@@ -22,7 +28,7 @@ public class PostController {
 
     @GetMapping
     @CrossOrigin("http://localhost:3000")
-    private ResponseEntity<?> list(){
+    ResponseEntity<?> list(){
         try{
             return new ResponseEntity<Object>(postService.getPosts(), new HttpHeaders(), HttpStatus.OK);
         } catch (Exception e){
@@ -31,8 +37,9 @@ public class PostController {
     }
 
     @PostMapping
+    @Transactional
     @CrossOrigin("http://localhost:3000")
-    private ResponseEntity<?> post(@RequestBody PostRequest postRequest){
+    ResponseEntity<?> post(@RequestBody PostRequest postRequest){
         try{
             Posts postResult = postService.addPost(postRequest);
 
@@ -44,7 +51,7 @@ public class PostController {
 
     @DeleteMapping
     @CrossOrigin("http://localhost:3000")
-    private ResponseEntity<?> deleteById(@RequestBody Posts post){
+    ResponseEntity<?> deleteById(@RequestBody Posts post){
         try{
             repository.deleteById(post.getId());
 

@@ -4,6 +4,7 @@ import com.example.postitback.entities.User;
 import com.example.postitback.pojo.UserAuthRequest;
 import com.example.postitback.repositories.AuthRepository;
 import com.example.postitback.services.UserService;
+import com.example.postitback.utils.CryptoManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class AuthController {
 
     @PostMapping
     @CrossOrigin("http://localhost:3000")
-    private ResponseEntity<?> save(@RequestBody User user){
+    ResponseEntity<?> save(@RequestBody User user){
         try{
             UserAuthRequest returnUser = userService.authenticateUser(user);
 
