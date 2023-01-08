@@ -8,6 +8,7 @@ import com.example.postitback.services.PostService;
 import com.example.postitback.utils.JwtManager;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,9 +52,9 @@ public class PostController {
 
     @DeleteMapping
     @CrossOrigin("http://localhost:3000")
-    ResponseEntity<?> deleteById(@RequestBody Posts post){
+    ResponseEntity<?> deleteById(@RequestParam("id") Long id){
         try{
-            repository.deleteById(post.getId());
+            repository.deleteById(id);
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e){
