@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Service
@@ -45,6 +42,16 @@ public class PostService {
 
     public List<Posts> getPosts(){
         List<Posts> allPosts = postRepository.findAll();
+        for(Posts post : allPosts){
+            Optional<User> userOptional = userRepository.findById(post.getUserId());
+            userOptional.ifPresent(post::setUser);
+        }
+
+        return allPosts;
+    }
+
+    public List<Posts> getPostsById(Long userId){
+        List<Posts> allPosts = postRepository.findAllByUserId(userId);
         for(Posts post : allPosts){
             Optional<User> userOptional = userRepository.findById(post.getUserId());
             userOptional.ifPresent(post::setUser);

@@ -27,11 +27,20 @@ public class PostController {
     @Autowired
     PostService postService;
 
-    @GetMapping
+    @RequestMapping(method = RequestMethod.GET)
     @CrossOrigin("http://localhost:3000")
     ResponseEntity<?> list(){
         try{
             return new ResponseEntity<Object>(postService.getPosts(), new HttpHeaders(), HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(e, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+    ResponseEntity<?> listPostsById(@PathVariable("userId") String userId){
+        try{
+            return new ResponseEntity<Object>(postService.getPostsById(Long.parseLong(userId)), new HttpHeaders(), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
