@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/controllers/user")
@@ -21,10 +22,16 @@ public class UserController {
     @Autowired
     UserRepository repository;
 
-    @GetMapping
+    @RequestMapping(method = RequestMethod.GET)
     ResponseEntity<?> getUserByToken(HttpServletRequest request){
         User user = JwtManager.getUserFromToken(request.getHeader(HttpHeaders.AUTHORIZATION));
         return new ResponseEntity<Object>(repository.findById(user.getId()), new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    ResponseEntity<?> getUserById(@PathVariable("id") Long id){
+        Optional<User> user = repository.findById(id);
+        return new ResponseEntity<Object>(user, new HttpHeaders(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
