@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -42,6 +44,16 @@ public class UserController {
             newUser.setPassword(CryptoManager.encrypt(user.getPassword()));
             repository.save(newUser);
             return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(value = "/findByName", method = RequestMethod.POST)
+    ResponseEntity<?> getUsersByName(@RequestBody User user){
+        try{
+            List<User> users = repository.searchUsersByUsername(user.getUsername());
+            return new ResponseEntity<>(users, new HttpHeaders(), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
