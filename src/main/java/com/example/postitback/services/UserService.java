@@ -7,16 +7,8 @@ import com.example.postitback.repositories.UserRepository;
 import com.example.postitback.utils.CryptoManager;
 import com.example.postitback.utils.JwtManager;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.UUID;
 
 @Service
 public class UserService {

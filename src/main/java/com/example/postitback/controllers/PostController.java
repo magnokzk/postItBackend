@@ -1,21 +1,16 @@
 package com.example.postitback.controllers;
 
 import com.example.postitback.entities.Posts;
-import com.example.postitback.entities.User;
 import com.example.postitback.pojo.PostRequest;
 import com.example.postitback.repositories.PostRepository;
 import com.example.postitback.services.PostService;
-import com.example.postitback.utils.JwtManager;
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Controller
