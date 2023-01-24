@@ -63,6 +63,17 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/friendRequests/delete", method = RequestMethod.DELETE)
+    ResponseEntity<?> deleteFriendRequest(HttpServletRequest request, @RequestBody FriendRequests friendRequest){
+        try{
+            friendRequestsRepository.delete(friendRequest);
+
+            return new ResponseEntity<>(HttpStatus.OK);    
+        } catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @RequestMapping(value = "/friendRequests/send/{toUserId}", method = RequestMethod.POST)
     ResponseEntity<?> createFriendRequest(HttpServletRequest request, @PathVariable("toUserId") Integer toUserId){
         try{
