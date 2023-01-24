@@ -47,7 +47,7 @@ public class PostService {
         return allPosts;
     }
 
-    public List<Posts> getPostsById(Long userId){
+    public List<Posts> getPostsById(Integer userId){
         List<Posts> allPosts = postRepository.findAllByUserId(userId);
         for(Posts post : allPosts){
             Optional<User> userOptional = userRepository.findById(post.getUserId());

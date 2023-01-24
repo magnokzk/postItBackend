@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostRequest {
-    private Long postId;
+    private Integer postId;
     public String description;
-    public Long userId;
+    public Integer userId;
 }

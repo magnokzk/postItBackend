@@ -40,7 +40,7 @@ public class JwtManager {
         Claims claims = getJwtClaims(token);
 
         User claimUser = new User();
-        claimUser.setId(new Long((Integer) claims.get("userId")));
+        claimUser.setId((Integer) claims.get("userId"));
         claimUser.setUsername((String) claims.get("username"));
         claimUser.setEmail((String) claims.get("email"));
 

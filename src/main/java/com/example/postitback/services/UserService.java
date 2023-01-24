@@ -37,7 +37,7 @@ public class UserService {
         return returnData;
     }
 
-    public Long getUserIdFromToken(String token) throws Exception {
+    public Integer getUserIdFromToken(String token) throws Exception {
         Boolean isValid = JwtManager.isTokenValid(token);
         if(!isValid){
             throw new Exception("Invalid.token");
@@ -48,6 +48,6 @@ public class UserService {
             throw new Exception("Invalid.token");
         }
 
-        return (Long) tokenClaims.get("userId");
+        return (Integer) tokenClaims.get("userId");
     }
 }

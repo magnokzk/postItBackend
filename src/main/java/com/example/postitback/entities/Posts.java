@@ -16,14 +16,14 @@ public class Posts {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "user_id", nullable = false)
     @JsonBackReference
-    private Long userId;
+    private Integer userId;
 
     @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
     @JsonManagedReference

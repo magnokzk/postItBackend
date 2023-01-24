@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserAuthRequest {
-    private Long id;
+    private Integer id;
     private String username;
     private String email;
     private String token;

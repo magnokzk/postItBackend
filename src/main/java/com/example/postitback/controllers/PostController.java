@@ -35,7 +35,7 @@ public class PostController {
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     ResponseEntity<?> listPostsById(@PathVariable("userId") String userId){
         try{
-            return new ResponseEntity<Object>(postService.getPostsById(Long.parseLong(userId)), new HttpHeaders(), HttpStatus.OK);
+            return new ResponseEntity<Object>(postService.getPostsById(Integer.parseInt(userId)), new HttpHeaders(), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(e, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -56,7 +56,7 @@ public class PostController {
 
     @DeleteMapping
     @CrossOrigin("http://localhost:3000")
-    ResponseEntity<?> deleteById(@RequestParam("id") Long id){
+    ResponseEntity<?> deleteById(@RequestParam("id") Integer id){
         try{
             repository.deleteById(id);
 
