@@ -7,5 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.postitback.entities.FriendRequests;
 
 public interface FriendRequestsRepository extends JpaRepository<FriendRequests, Integer> {
-    List<FriendRequests> findFrientRequestsByToUserId(Integer userId);    
+    List<FriendRequests> findFrientRequestsByToUserId(Integer userId);
+    FriendRequests findByToUserIdAndFromUserId(Integer toUserId, Integer fromUserId);    
 }

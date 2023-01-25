@@ -2,8 +2,11 @@ package com.example.postitback.controllers;
 
 import com.example.postitback.entities.FriendRequests;
 import com.example.postitback.entities.User;
+import com.example.postitback.entities.UserFriends;
 import com.example.postitback.repositories.FriendRequestsRepository;
+import com.example.postitback.repositories.UserFriendsRepository;
 import com.example.postitback.repositories.UserRepository;
+import com.example.postitback.services.UserService;
 import com.example.postitback.utils.CryptoManager;
 import com.example.postitback.utils.JwtManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,12 @@ public class UserController {
     @Autowired
     FriendRequestsRepository friendRequestsRepository;
 
+    @Autowired
+    UserFriendsRepository userFriendsRepository;
+
+    @Autowired
+    UserService userService;
+
     @RequestMapping(method = RequestMethod.GET)
     ResponseEntity<?> getUserByToken(HttpServletRequest request){
         try{
@@ -50,6 +59,28 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/{id}/hasFriendRequest/{secondId}", method = RequestMethod.GET)
+    ResponseEntity<?> getUserById(@PathVariable("id") Integer id, @PathVariable("secondId") Integer secondId){
+        try{
+            Boolean hasPendingRequest = userService.hasPendingFriendRequest(id, secondId);
+            
+            return new ResponseEntity<Boolean>(hasPendingRequest, new HttpHeaders(), HttpStatus.OK);   
+        } catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @RequestMapping(value = "/{id}/friendList", method = RequestMethod.GET)
+    ResponseEntity<?> getFriendList(@PathVariable("id") Integer id){
+        try{
+            List<UserFriends> userFriends = userFriendsRepository.findAllByUserId(id);
+            
+            return new ResponseEntity<Object>(userFriends, new HttpHeaders(), HttpStatus.OK);   
+        } catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @RequestMapping(value = "/friendRequests", method = RequestMethod.GET)
     ResponseEntity<?> getFriendRequests(HttpServletRequest request){
         try{
@@ -58,6 +89,17 @@ public class UserController {
             List<FriendRequests> friendRequests = friendRequestsRepository.findFrientRequestsByToUserId(user.getId());
 
             return new ResponseEntity<Object>(friendRequests, new HttpHeaders(), HttpStatus.OK);    
+        } catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(value = "/addFriend", method = RequestMethod.POST)
+    ResponseEntity<?> addFriend(@RequestBody FriendRequests friendRequests){
+        try{
+            FriendRequests savedRequest = friendRequestsRepository.save(friendRequests);
+
+            return new ResponseEntity<Object>(savedRequest, new HttpHeaders(), HttpStatus.OK);    
         } catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -88,6 +130,17 @@ public class UserController {
             newFriendRequest.setToUserId(toUserId);
             
             friendRequestsRepository.save(newFriendRequest);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(value = "/friendRequests/accept", method = RequestMethod.POST)
+    ResponseEntity<?> acceptRequest(@RequestBody FriendRequests friendRequest){
+        try{
+            userService.acceptFriendRequest(friendRequest);
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch(Exception e) {
