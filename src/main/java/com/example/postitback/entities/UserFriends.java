@@ -23,6 +23,6 @@ public class UserFriends {
     private Integer friendId;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "userId", insertable = false, updatable = false)
+    @JoinColumn(name = "friendId", insertable = false, updatable = false)
     private User friendInfo;
 }
