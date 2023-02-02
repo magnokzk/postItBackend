@@ -4,6 +4,7 @@ import com.example.postitback.entities.Posts;
 import com.example.postitback.entities.User;
 import com.example.postitback.pojo.PostRequest;
 import com.example.postitback.repositories.PostRepository;
+import com.example.postitback.repositories.UserFriendsRepository;
 import com.example.postitback.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ public class PostService {
 
     @Autowired
     PostRepository postRepository;
+
+    @Autowired
+    UserFriendsRepository userFriendsRepository;
 
     public Posts addPost(PostRequest postRequest) throws Exception {
         Posts post = new Posts();
@@ -46,6 +50,17 @@ public class PostService {
 
         return allPosts;
     }
+
+    public List<Posts> getFriendPostsFromUserId(Integer userId){
+        List<Integer> friendsIds = userFriendsRepository.findFriendsIdByUserId(userId);
+        List<Posts> friendsPosts = postRepository.findAllByUserIds(friendsIds);
+        for(Posts post : friendsPosts){
+            Optional<User> userOptional = userRepository.findById(post.getUserId());
+            userOptional.ifPresent(post::setUser);
+        }
+
+        return friendsPosts;
+    }    
 
     public List<Posts> getPostsById(Integer userId){
         List<Posts> allPosts = postRepository.findAllByUserId(userId);
