@@ -6,7 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Date;
+
 import javax.persistence.*;
+
+import org.springframework.format.annotation.DateTimeFormat;
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,7 +24,17 @@ public class User {
     private Integer id;
 
     @Column(nullable = false)
-    private String username;
+    private String userName;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String surname;
+
+    @Column(nullable = false)
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private Date birthDate;
 
     @Column(nullable = false)
     @JsonBackReference

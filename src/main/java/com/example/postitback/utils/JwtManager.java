@@ -14,7 +14,7 @@ public class JwtManager {
     public static String newJwt(User user){
         return Jwts.builder()
                 .claim("userId", user.getId())
-                .claim("username", user.getUsername())
+                .claim("username", user.getUserName())
                 .claim("email", user.getEmail())
                 .setSubject("user")
                 .setId(UUID.randomUUID().toString())
@@ -41,7 +41,7 @@ public class JwtManager {
 
         User claimUser = new User();
         claimUser.setId((Integer) claims.get("userId"));
-        claimUser.setUsername((String) claims.get("username"));
+        claimUser.setUserName((String) claims.get("username"));
         claimUser.setEmail((String) claims.get("email"));
 
         return claimUser;

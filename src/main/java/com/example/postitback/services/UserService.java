@@ -34,7 +34,7 @@ public class UserService {
     FriendRequestsRepository friendRequestsRepository;
 
     public UserAuthRequest authenticateUser(User user) throws Exception {
-        User foundUser = authRepository.findUserByUsernameAndPassword(user.getUsername(), CryptoManager.encrypt(user.getPassword()));
+        User foundUser = authRepository.findUserByUserNameAndPassword(user.getUserName(), CryptoManager.encrypt(user.getPassword()));
         if(foundUser == null){
             throw new Exception("User.not.found");
         }
@@ -43,7 +43,7 @@ public class UserService {
 
         UserAuthRequest returnData = new UserAuthRequest();
         returnData.setId(foundUser.getId());
-        returnData.setUsername(foundUser.getUsername());
+        returnData.setUserName(foundUser.getUserName());
         returnData.setEmail(foundUser.getEmail());
         returnData.setToken(token);
 

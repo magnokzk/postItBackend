@@ -10,6 +10,6 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Posts, Integer> {
     List<Posts> findAllByUserId(Integer id);
 
-    @Query(value = "SELECT p FROM Posts p WHERE p.userId IN :ids")
-    List<Posts> findAllByUserIds(@Param("ids") List<Integer> ids);
+    @Query(value = "SELECT p FROM Posts p WHERE p.userId IN :ids OR p.userId = :userId")
+    List<Posts> findAllByUserIds(@Param("ids") List<Integer> ids, @Param("userId") Integer userId);
 }

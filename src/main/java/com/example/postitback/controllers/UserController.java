@@ -152,9 +152,12 @@ public class UserController {
     ResponseEntity<?> save(@RequestBody User user){
         try{
             User newUser = new User();
-            newUser.setUsername(user.getUsername());
+            newUser.setUserName(user.getUserName());
             newUser.setEmail(user.getEmail());
             newUser.setPassword(CryptoManager.encrypt(user.getPassword()));
+            newUser.setBirthDate(user.getBirthDate());
+            newUser.setName(user.getName());
+            newUser.setSurname(user.getSurname());
             
             repository.save(newUser);
 
@@ -167,7 +170,7 @@ public class UserController {
     @RequestMapping(value = "/findByName", method = RequestMethod.POST)
     ResponseEntity<?> getUsersByName(@RequestBody User user){
         try{
-            List<User> users = repository.searchUsersByUsername(user.getUsername());
+            List<User> users = repository.searchUsersByUserName(user.getUserName());
 
             return new ResponseEntity<>(users, new HttpHeaders(), HttpStatus.OK);
         } catch (Exception e){

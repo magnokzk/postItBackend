@@ -53,7 +53,7 @@ public class PostService {
 
     public List<Posts> getFriendPostsFromUserId(Integer userId){
         List<Integer> friendsIds = userFriendsRepository.findFriendsIdByUserId(userId);
-        List<Posts> friendsPosts = postRepository.findAllByUserIds(friendsIds);
+        List<Posts> friendsPosts = postRepository.findAllByUserIds(friendsIds, userId);
         for(Posts post : friendsPosts){
             Optional<User> userOptional = userRepository.findById(post.getUserId());
             userOptional.ifPresent(post::setUser);
